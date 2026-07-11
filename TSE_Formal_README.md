@@ -4,7 +4,7 @@ Formal verification of the Seven Laws of Strategic Replicators in Lean 4 with Ma
 
 [![Lean 4](https://img.shields.io/badge/Lean-4-blue.svg)](https://lean-lang.org/)
 [![Mathlib4](https://img.shields.io/badge/Mathlib-4-green.svg)](https://github.com/leanprover-community/mathlib4)
-[![Paper](https://img.shields.io/badge/Paper-arXiv-red.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+[![Paper](https://img.shields.io/badge/Paper-arXiv-red.svg)](https://arxiv.org/abs/2512.07901)
 
 ---
 
@@ -133,7 +133,7 @@ These are marked with `sorry` or `axiom` declarations.
 
 This formalization accompanies:
 
-> Vallier, Kevin. "The Theory of Strategic Evolution: Games with Endogenous Players and the Seven Laws of Strategic Replicators." arXiv:XXXX.XXXXX (2025).
+> Vallier, Kevin. "The Theory of Strategic Evolution: Games with Endogenous Players and the Seven Laws of Strategic Replicators." arXiv:2512.07901 (2025).
 
 Each `.lean` file corresponds to sections in the paper. Comments reference theorem numbers.
 
@@ -186,7 +186,7 @@ Issues and PRs welcome. Priority areas:
   title={TSE Formal: Lean 4 Formalization of the Theory of Strategic Evolution},
   author={Vallier, Kevin},
   year={2025},
-  url={https://github.com/kevinvallier/TSE_Formal}
+  url={https://github.com/selfreferencing/TSE_Formal}
 }
 ```
 

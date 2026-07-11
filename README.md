@@ -6,8 +6,16 @@ Kevin Vallier
 University of Toledo  
 December 2025
 
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
-[![Lean](https://img.shields.io/badge/Lean_4-Formalized-blue.svg)](https://github.com/kevinvallier/TSE_Formal)
+[![arXiv](https://img.shields.io/badge/arXiv-2512.07901-b31b1b.svg)](https://arxiv.org/abs/2512.07901)
+[![Lean](https://img.shields.io/badge/Lean_4-Formalized-blue.svg)](https://github.com/selfreferencing/TSE_Formal)
+
+---
+
+## Current Version and Formal Verification
+
+**Current source:** [`TSE_seven_laws_v3.9.tex`](TSE_seven_laws_v3.9.tex) (the prior `v3.8` `.tex`/`.pdf` are kept for reference; regenerate the PDF when compiling). Published preprint: [arXiv:2512.07901](https://arxiv.org/abs/2512.07901).
+
+**All seven laws are machine-verified in Lean 4 / Mathlib** — 73 theorems, cold-compiling with zero custom axioms — at [`selfreferencing/TSE_Formal`](https://github.com/selfreferencing/TSE_Formal). Version 3.9 adds a *Formal Verification* section and integrates the corrections the verification surfaced (ESDI existence via Nash's map / Brouwer; corrected G∞ spectral bounds; the endogenous-electorate impossibility rebuilt on an Overwhelming-Bloc axiom; and the Hopf transition placed at the γ = 1 boundary). These appear as clearly-marked footnotes and remarks; the framework's architecture is unchanged.
 
 ---
 
@@ -117,7 +125,7 @@ Core theorems have been formally verified in Lean 4 using Mathlib4:
 - Laws 2 and 3 are fully machine-checked
 - Laws 1, 4, 5, 6, 7 are proven modulo standard axioms for spectral theory, ODE existence, and bifurcation theory
 
-See: [TSE_Formal repository](https://github.com/kevinvallier/TSE_Formal)
+See: [TSE_Formal repository](https://github.com/selfreferencing/TSE_Formal)
 
 ---
 
@@ -136,7 +144,7 @@ See: [TSE_Formal repository](https://github.com/kevinvallier/TSE_Formal)
 @article{vallier2025tse,
   title={The Theory of Strategic Evolution: Games with Endogenous Players and the Seven Laws of Strategic Replicators},
   author={Vallier, Kevin},
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  journal={arXiv preprint arXiv:2512.07901},
   year={2025}
 }
 ```
