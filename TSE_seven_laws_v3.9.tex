@@ -1479,12 +1479,18 @@ A population state $x^* \in \Delta^{n-1}$ is an \emph{Evolutionarily Stable Dist
 
 \begin{theorem}[ESDI Existence]
 \label{thm:esdi-existence}
-Under RUPSI-lite with compact state space and continuous fitness, at least one ESDI exists.\footnote{Formal verification found that the proof below establishes the ESDI conditions only when fitness is state-independent: for state-dependent $f$, a maximizer of $\bar{f}$ need not satisfy the equilibrium conditions, and a counterexample to this proof method is machine-checked (\texttt{Law2\_ESDI.lean}). Existence in the general case is recovered via Nash's improvement map, whose fixed points provably satisfy the ESDI conditions (proved by finite algebra); existence of the fixed point is Brouwer's theorem, carried as an explicit hypothesis.}
+Under RUPSI-lite with compact state space and continuous fitness, at least one ESDI exists.
 \end{theorem}
-\noindent\textit{Formalization: \texttt{Sparsity.lean}, fully proven.}
+\noindent\textit{Formalization: \texttt{Law2\_ESDI.lean}. The fixed-point $\Rightarrow$ ESDI step is proved by finite algebra with zero axioms; existence of the fixed point invokes Brouwer's theorem, carried as an explicit hypothesis.}
 
 \begin{proof}
-The simplex $\Delta^{n-1}$ is compact. Mean fitness $\bar{f}(x)$ is continuous. By the extreme value theorem, $\bar{f}$ attains its maximum on $\Delta^{n-1}$. Any maximum $x^*$ satisfies the ESDI conditions by the characterization in Theorem~\ref{thm:ss1}.
+Define Nash's improvement map $T : \Delta^{n-1} \to \Delta^{n-1}$ by
+\[
+T(x)_j = \frac{x_j + \max\{0,\, f_j(x) - \bar{f}(x)\}}{1 + \sum_k \max\{0,\, f_k(x) - \bar{f}(x)\}}.
+\]
+Because $f$ is continuous, $T$ is continuous and maps the simplex into itself, so by Brouwer's fixed-point theorem it has a fixed point $x^*$. At a fixed point, clearing the denominator gives $x^*_j\, K = \max\{0,\, f_j(x^*) - \bar{f}(x^*)\}$ for every $j$, where $K = \sum_k \max\{0,\, f_k(x^*) - \bar{f}(x^*)\} \geq 0$. If $K > 0$, then every $j \in \operatorname{supp}(x^*)$ has $f_j(x^*) > \bar{f}(x^*)$, whence $\bar{f}(x^*) = \sum_j x^*_j f_j(x^*) > \bar{f}(x^*)$---a contradiction. Hence $K = 0$, so $f_j(x^*) \leq \bar{f}(x^*)$ for all $j$, with equality on $\operatorname{supp}(x^*)$: the ESDI conditions hold.
+
+\emph{Remark.} An earlier version derived existence from the extreme value theorem alone, by maximising $\bar{f}$ on the simplex. That argument establishes the ESDI conditions only for state-\emph{independent} fitness: for state-dependent $f$ a maximiser of $\bar{f}$ need not satisfy the equilibrium conditions (a counterexample is machine-checked in \texttt{Law2\_ESDI.lean}). The fixed-point argument above is the correct route.
 \end{proof}
 
 \subsection{Triple Equivalence}
@@ -2087,11 +2093,7 @@ for some $\theta < 1$, then the extended system is slack-admissible with $\sigma
 \noindent\textit{Formalization: \texttt{GInfinityExtension.lean}, proven modulo spectral theory \citep{horn2012matrix}.}
 
 \begin{proof}
-By spectral perturbation theory:
-\[
-\rho(\tilde{\Gamma}) \leq \rho(\Gamma) + \sqrt{\|b\|_{\infty, v} \cdot \|c\|_{1, v}} \leq (1 - \sigma) + \theta \sigma = 1 - (1 - \theta)\sigma.
-\]
-Thus $\sigma' = 1 - \rho(\tilde{\Gamma}) \geq (1 - \theta)\sigma > 0$.
+We argue via the certificate (M-matrix) form of the small-gain condition (Appendix~C): $\rho(\Gamma) < 1$ is equivalent to the existence of a weight vector $v > 0$ with $(I - \Gamma^\top)v > 0$, and the margin is $\sigma$ when $(I - \Gamma^\top)v \geq \sigma\,\mathbf{1}$. Extend $v$ to $\tilde{v} = (v, w)$ with $w = \langle b, v\rangle + (1-\theta)\sigma > 0$. Using the coupling bounds $\|b\|_{\infty,v} \leq \theta\sigma$ and $\langle c, v\rangle \leq \theta\sigma$ one verifies, row by row, that $(I - \tilde{\Gamma}^\top)\tilde{v} \geq (1-\theta)\sigma\,\mathbf{1}$; hence $\tilde{v}$ certifies $\rho(\tilde{\Gamma}) \leq 1 - (1-\theta)\sigma$ and $\sigma' = 1 - \rho(\tilde{\Gamma}) \geq (1-\theta)\sigma > 0$. (The explicit extended certificate is machine-checked in \texttt{Law4\_ClosureG.lean}, and the row-sum eigenvalue bounds it relies on in \texttt{SpectralBridge.lean}. An earlier version invoked a bound $\rho(\tilde{\Gamma}) \leq \rho(\Gamma) + \sqrt{\|b\|_{\infty,v}\|c\|_{1,v}}$, which does not hold in general.)
 \end{proof}
 
 \subsection{Slack Budget}
@@ -2577,7 +2579,7 @@ Non-dictatorship & No external constraint \\
 \section{Endogenous-Electorate Impossibility}
 \label{sec:electorate-impossibility}
 
-This section proves that democratic governance mechanisms fail when voters can spawn strategically.\footnote{Formal verification surfaced a subtlety in the axioms below: Anonymity (A1) and Neutrality (A2) are jointly \emph{unsatisfiable} for a resolute rule over the full variable-electorate domain at every $|A| \geq 2$---the impartial-culture profile (every strict ranking once) is invariant under every relabelling of alternatives, so a neutral resolute rule would need a winner fixed by every permutation (machine-checked in \texttt{Law6\_Alignment.lean}). The impossibility is therefore re-established there on a different and, we argue, more apposite axiom: \emph{Overwhelming-Bloc}---a sufficiently large spawned bloc of identical ballots wins its top choice, the strategic-replicator counterpart of ``replication buys votes.'' Dropping Neutrality and adopting Overwhelming-Bloc, both Spawn Manipulation (Lemma~\ref{lem:spawn-manipulation}) and the Endogenous-Electorate Impossibility are reproved with no classical inputs, and ordinary majority rule witnesses that the repaired axioms are consistent.}
+This section proves that democratic governance mechanisms fail when voters can spawn strategically.
 
 \subsection{Setting}
 
@@ -2592,10 +2594,12 @@ This section proves that democratic governance mechanisms fail when voters can s
 
 \begin{enumerate}
     \item[\textbf{(A1)}] \textbf{Anonymity:} For any permutation $\sigma$ of voters, $f(\sigma P) = f(P)$.
-    \item[\textbf{(A2)}] \textbf{Neutrality:} For any permutation $\rho$ of alternatives, $f(\rho P) = \rho f(P)$.
     \item[\textbf{(A3)}] \textbf{Positive Responsiveness:} If $f(P) = a$ and $P'$ is obtained by having one voter rank $a$ higher, then $f(P') = a$.
     \item[\textbf{(A4)}] \textbf{Onto:} For each $a \in A$, there exists a profile $P$ with $f(P) = a$.
+    \item[\textbf{(A5)}] \textbf{Overwhelming-Bloc:} For every profile $P$ and ballot $\succ$, there is an integer $k \geq 1$ with $f(P + k \cdot \succ)$ equal to $\succ$'s top-ranked alternative. A sufficiently large spawned bloc of identical ballots elects its favourite---the strategic-replicator counterpart of ``replication buys votes''; every majoritarian, plurality, or positional-scoring rule satisfies it.
 \end{enumerate}
+
+\noindent\added{\textbf{Remark (why not Neutrality).}} The original formulation also imposed \emph{Neutrality}: $f(\rho P) = \rho f(P)$ for every relabelling $\rho$ of the alternatives. Formal verification shows that Anonymity and Neutrality are jointly \emph{unsatisfiable} for a resolute rule over the full variable-electorate domain whenever $|A| \geq 2$. The impartial-culture profile (each strict ranking exactly once) is invariant under every relabelling of $A$, so a neutral resolute rule would have to output an alternative fixed by every permutation of $A$---and none is (machine-checked in \texttt{Law6\_Alignment.lean}). We therefore drop Neutrality and build the impossibility on Overwhelming-Bloc (A5), which is consistent---ordinary majority rule satisfies it---and closer to the paper's own thesis: it is replication, not the geometry of fairness axioms, that breaks endogenous-electorate governance.
 
 \begin{definition}[Population-Stability]
 A social choice function is \emph{population-stable} (clone-proof) if for all profiles $P$, ballots $\succ$, and integers $k \geq 1$:
@@ -2606,14 +2610,7 @@ f(P + k \cdot \succ) \succsim f(P) \quad \text{(from } \succ \text{'s perspectiv
 
 \subsection{Key Lemmas}
 
-\begin{lemma}[Two-Outcome Majority]
-\label{lem:two-outcome}
-Under A1--A4, the restricted rule $f_{ab}$ on any pair $\{a, b\}$ is majority rule.
-\end{lemma}
-
-\begin{proof}
-We verify that $f_{ab}$ satisfies the hypotheses of May's theorem (1952): anonymity, neutrality, positive responsiveness, and non-imposition all inherit from the full rule $f$. By May's theorem, $f_{ab}$ must be majority rule.
-\end{proof}
+\noindent\added{\textbf{Remark.}} The earlier development routed the impossibility through a two-outcome majority lemma (via May's theorem, 1952), which used Neutrality. With Neutrality dropped, that route is unavailable---and unnecessary: Overwhelming-Bloc (A5) yields the manipulation in one step.
 
 \begin{lemma}[Spawn Manipulation]
 \label{lem:spawn-manipulation}
@@ -2624,44 +2621,7 @@ f(P + k \cdot \succ) \succ f(P).
 \end{lemma}
 
 \begin{proof}
-We construct a manipulation in at most $|A| - 1$ steps.
-
-\textbf{Step 1: Setup.}
-By Onto, there exist profiles $P_a, P_b, P_c$ with $f(P_a) = a$, $f(P_b) = b$, $f(P_c) = c$ for distinct alternatives $a, b, c \in A$.
-
-\textbf{Step 2: Initial Profile.}
-Take any profile $P$ with $f(P) = a$. Consider ballot $\succ^*$ with $c \succ^* a \succ^* b$ (manipulator prefers $c$ most, then $a$, then $b$).
-
-\textbf{Step 3: Pairwise Majority Shift.}
-By Lemma~\ref{lem:two-outcome}, $f_{ac}$ is majority rule on $\{a, c\}$. In profile $P$:
-\begin{itemize}
-    \item Let $n_{a > c}$ voters prefer $a$ to $c$.
-    \item Let $n_{c > a}$ voters prefer $c$ to $a$.
-\end{itemize}
-Adding $k$ copies of $\succ^*$ (which has $c \succ^* a$) shifts the count to $(n_{a > c}, n_{c > a} + k)$.
-
-For $k > n_{a > c} - n_{c > a}$, we have $n_{c > a} + k > n_{a > c}$, so $c$ beats $a$ by majority in the pairwise comparison.
-
-\textbf{Step 4: Outcome Change.}
-\textit{Claim:} For sufficiently large $k$, $f(P + k \cdot \succ^*) \neq a$.
-
-\textit{Proof of Claim:} Suppose for contradiction that $f(P + k \cdot \succ^*) = a$ for all $k \geq 1$. Consider profile $P' := P + k \cdot \succ^* + P_c$ where $P_c$ has $f(P_c) = c$.
-
-In $P'$, alternative $c$ beats $a$ by pairwise majority when $k$ is large (the $k$ copies of $\succ^*$ plus the $c$-preferring voters in $P_c$ overwhelm $a$-preferring voters).
-
-By Positive Responsiveness: starting from $P_c$ (where $f(P_c) = c$) and adding voters who favour $c$ over $a$, the outcome cannot switch to $a$. Hence $f(P') \neq a$.
-
-But viewing $P'$ as $(P + k \cdot \succ^*) + P_c$: if $f(P + k \cdot \succ^*) = a$, adding $P_c$ (with voters preferring $c$) should not help $a$. Contradiction. Hence $f(P + k \cdot \succ^*) \neq a$ for large $k$. $\square$
-
-\textbf{Step 5: Manipulation Success or Iteration.}
-Since $f(P + k \cdot \succ^*) \neq a = f(P)$, let $f(P + k \cdot \succ^*) = x$ for some $x \neq a$.
-
-\textit{Case A:} $x \succ^* a$ (e.g., $x = c$). Then type $\succ^*$ gains by spawning: $f(P + k \cdot \succ^*) \succ^* f(P)$. Manipulation succeeds.
-
-\textit{Case B:} $a \succ^* x$ (e.g., $x = b$). Then consider a new ballot $\succ^{**}$ with $a \succ^{**} x$ at top. Apply the same argument to profile $P + k \cdot \succ^*$: for large $k'$, adding $k'$ copies of $\succ^{**}$ changes the outcome away from $x$.
-
-\textbf{Step 6: Finite Termination.}
-Each iteration either succeeds (Case A) or moves to a new alternative. With $|A|$ alternatives, after at most $|A| - 1$ iterations, we must reach Case A for some ballot type (we cannot cycle because each ballot ranks alternatives linearly, and we always move toward the top of some ballot's ranking).
+By Onto (A4), fix a profile $P$ with $f(P) = a$ for some alternative $a$, and choose any alternative $b \neq a$ together with a ballot $\succ$ that ranks $b$ first. By Overwhelming-Bloc (A5), there is $k \geq 1$ with $f(P + k \cdot \succ) = b$. Since $b = f(P + k \cdot \succ) \succ a = f(P)$, spawning the bloc strictly improves the outcome from $\succ$'s own perspective.
 \end{proof}
 
 \subsection{Main Result}
@@ -2670,7 +2630,7 @@ Each iteration either succeeds (Case A) or moves to a new alternative. With $|A|
 \label{thm:electorate-impossibility}
 No social choice function $f$ simultaneously satisfies:
 \begin{enumerate}
-    \item Anonymity, Neutrality, Positive Responsiveness, and Onto;
+    \item Anonymity, Positive Responsiveness, Onto, and Overwhelming-Bloc (A1, A3--A5);
     \item Population-Stability.
 \end{enumerate}
 \end{theorem}
@@ -2679,10 +2639,7 @@ No social choice function $f$ simultaneously satisfies:
 Suppose $f$ satisfies (1). By Lemma~\ref{lem:spawn-manipulation}, there exist $P$, $\succ$, $k$ with $f(P + k \cdot \succ) \succ f(P)$. This directly violates Population-Stability: spawning improves the outcome for type $\succ$, yet the outcome changes.
 \end{proof}
 
-\begin{theorem}[Manipulation Complexity Bound]
-\label{thm:manipulation-bound}
-The manipulation in Lemma~\ref{lem:spawn-manipulation} requires at most $(|A| - 1) \times n$ total spawned voters, where $n = |P|$ is the original electorate size. This bound is tight.
-\end{theorem}
+\noindent\added{\textbf{Remark (bloc size).}} The number of spawned ballots the manipulation requires is the Overwhelming-Bloc witness $k$ for the rule $f$: finite for every rule satisfying A5, but rule-dependent. (The earlier $(|A|-1)\times n$ bound was specific to the superseded May-route construction.)
 
 \begin{corollary}[Impossibility of Democratic AI Governance]
 \label{cor:democratic-ai}
@@ -2733,25 +2690,26 @@ Consider the biased RPS system with payoff matrix:
 \]
 where $\kappa$ is a bias parameter.
 
-\begin{proposition}[Hopf Curve]
-The system undergoes Hopf bifurcation along the curve:
+\begin{proposition}[Hopf Threshold]
+\label{prop:hopf-threshold}
+The biased RPS system undergoes a supercritical Hopf bifurcation at $\kappa = 0$---exactly the pure-swirl / $\gamma = 1$ stability boundary. At the interior equilibrium $(\tfrac13, \tfrac13, \tfrac13)$ the linearization has eigenvalues
 \[
-\kappa_c(\mu) = \frac{1 - \sqrt{1 - 3\mu}}{3\mu} \cdot (1 - \mu)
+\lambda_\pm(\kappa) = -\frac{\kappa}{6} \pm i\,\frac{\sqrt{3}\,(\kappa + 2)}{6},
 \]
-where $\mu \in (0, 1/3)$ parameterizes the family.\footnote{\label{fn:hopf}Formal verification found that under the canonical replicator--mutator instantiation of the biased-RPS payoff, the curve $\kappa_c(\mu)$ is \emph{not} a Hopf locus: the linearization at the barycentre has trace $-\kappa/3 - 2\mu < 0$ for all $\kappa \geq 0$, $\mu > 0$ (machine-checked), so the interior equilibrium is a stable focus throughout the positive-bias range. A genuine supercritical Hopf does occur---at $\kappa = 0$, exactly the pure-swirl / $\gamma = 1$ stability boundary named by Law~7. There the center eigenvalues are $-\kappa/6 \pm i\sqrt{3}(\kappa+2)/6$, and the imaginary-axis crossing, nonzero frequency, and transversality are all machine-checked (\texttt{Law7\_Hopf.lean}). The first Lyapunov coefficient below---note its $\sqrt{3}$, the equilateral-RPS fingerprint of the $\kappa = 0$ computation---confirms supercriticality. We therefore read the transition at $\gamma = 1$ (Law~7's stated threshold), consistent with Laws~1 and~3.}
+whose real part $-\kappa/6$ crosses zero transversally at $\kappa = 0$ while the frequency $\sqrt{3}(\kappa+2)/6$ remains nonzero.
 \end{proposition}
-\noindent\textit{Formalization: \texttt{HopfBifurcation.lean}, proven modulo center manifold reduction \citep{guckenheimer1983nonlinear}.}
+\noindent\textit{Formalization: \texttt{Law7\_Hopf.lean}. The eigenvalue crossing, nonzero frequency $\sqrt{3}/3$, and transversality at $\kappa = 0$ are machine-checked. An earlier draft placed the bifurcation along the curve $\kappa_c(\mu) = \frac{1 - \sqrt{1 - 3\mu}}{3\mu}(1 - \mu)$; under the canonical replicator--mutator dynamics that curve is \emph{not} a Hopf locus---the barycentre linearization has trace $-\kappa/3 - 2\mu < 0$ for every $\kappa \geq 0$, $\mu > 0$ (verified)---so the transition is read at the $\gamma = 1$ boundary, consistent with Laws~1 and~3.}
 
 \subsection{First Lyapunov Coefficient}
 
 \begin{theorem}[Supercritical Bifurcation]
 The first Lyapunov coefficient satisfies:
 \[
-\ell_1(\kappa_c, \mu) = -\frac{\sqrt{3}}{8} \cdot \frac{1 - 3\mu}{(1 - \mu)^2} < 0
+\ell_1(\mu) = -\frac{\sqrt{3}}{8} \cdot \frac{1 - 3\mu}{(1 - \mu)^2} < 0
 \]
-for $\mu \in (0, 1/3)$. The bifurcation is supercritical: a stable limit cycle emerges.
+for $\mu \in (0, 1/3)$. The negative sign---with its equilateral-RPS $\sqrt{3}$, the fingerprint of the $\kappa = 0$ computation---makes the Proposition~\ref{prop:hopf-threshold} bifurcation supercritical: a stable limit cycle emerges.
 \end{theorem}
-\noindent\textit{Formalization: \texttt{HopfBifurcation.lean}, proven modulo center manifold reduction \citep{guckenheimer1983nonlinear}.}
+\noindent\textit{Formalization: \texttt{Law7\_Hopf.lean}, where $\ell_1(\mu) < 0$ on $(0, 1/3)$ is machine-checked. The classical center-manifold reduction that links a negative first Lyapunov coefficient to the emergent stable cycle is carried as an explicit hypothesis rather than assumed \citep{guckenheimer1983nonlinear}.}
 
 \subsection{Amplitude Scaling}
 
@@ -5842,48 +5800,6 @@ These principles derive directly from TSE theorems and provide actionable guidan
 \section{Future Directions}
 \label{sec:future}
 
-\subsection{Formal Verification}
-\label{sec:formal-verification}
-
-The mathematical claims in this paper have been formalised in Lean~4 using Mathlib4. The verification status of each law is as follows:
-
-\begin{center}
-\begin{tabular}{llll}
-\toprule
-\textbf{Law} & \textbf{File} & \textbf{Status} & \textbf{Reference} \\
-\midrule
-1 & \texttt{Frontier.lean} & modulo ODE derivatives & Mathlib ODE \\
-2 & \texttt{Sparsity.lean} & \textbf{fully proven} & --- \\
-3 & \texttt{SmallGain.lean} & \textbf{fully proven} & --- \\
-4 & \texttt{GInfinityExtension.lean} & modulo spectral theory & \citet{horn2012matrix} \\
-5 & \texttt{G12ConstitutionalSelection.lean} & modulo ODE well-posedness & Mathlib ODE \\
-6 & \texttt{PerronFrobenius.lean} & modulo Perron-Frobenius & \citet{horn2012matrix} \\
-7 & \texttt{HopfBifurcation.lean} & modulo bifurcation theory & \citet{guckenheimer1983nonlinear} \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Laws~2 (ESDI Characterization) and~3 (H-$\gamma$ Stability) are fully machine-checked with no external axioms. The remaining laws are proven modulo standard results not yet available in Mathlib4:
-\begin{itemize}
-    \item \textbf{Spectral theory:} Perron-Frobenius theorems for non-negative matrices \citep{horn2012matrix}.
-    \item \textbf{ODE theory:} Picard-Lindel\"of existence and Gronwall uniqueness (Mathlib \texttt{Analysis.ODE}).
-    \item \textbf{Bifurcation theory:} Center manifold reduction and Hopf normal form \citep{guckenheimer1983nonlinear}.
-\end{itemize}
-All axioms cite specific textbook theorems, ensuring that the gap between formal verification and complete proof is bridged by well-established mathematics. The complete formalization ($\sim$15,000 lines) is available at \url{https://github.com/kevinvallier/TSE_Formal}.
-
-\begin{remark}[Verification Architecture]
-The formalization follows the logical dependencies of the theory:
-\begin{enumerate}
-    \item \textbf{Simplex geometry:} Forward invariance, mass conservation.
-    \item \textbf{Price decomposition:} Variance structure, externality bounds.
-    \item \textbf{SS-1:} Lyapunov monotonicity.
-    \item \textbf{SS-2:} Elimination and frontier support.
-    \item \textbf{G1:} Neumann series weights, multi-level Lyapunov.
-    \item \textbf{G$\infty$:} Extension bounds, closure.
-    \item \textbf{Impossibility results:} Reachability, heteroclinic cycles.
-\end{enumerate}
-\end{remark}
-
 \subsection{Empirical Testing}
 
 TSE generates falsifiable predictions:
@@ -6202,7 +6118,7 @@ Law & Module & Status \\
 
 The formalization is a from-scratch reconstruction that avoids the analytic ``modulo'' caveats of earlier drafts: continuous-time Lyapunov claims are recast in exact discrete-time or given-trajectory form; the small-gain condition is stated in the M-matrix certificate form that the paper's own Appendix~C endorses; and the genuinely classical inputs (LP strong duality, Brouwer's fixed-point theorem, the classical supercritical Hopf theorem) are carried as explicit hypotheses, not axioms. The \texttt{AxiomsAudit.lean} file runs \texttt{\#print axioms} on every headline; its output is the verification claim and reproduces from a clean checkout.
 
-\paragraph{Corrections surfaced by verification.} Formalizing the paper turned up three issues, each machine-checked with a recommended fix (see footnote~\ref{fn:formal}, the ESDI and electorate footnotes, and footnote~\ref{fn:hopf}; full detail in the repository's \texttt{STATEMENTS.md} and \texttt{RETURN.md}). (i)~The ESDI existence proof (Theorem~\ref{thm:esdi-existence}) does not cover state-dependent fitness; existence is recovered via Nash's improvement map and Brouwer's theorem. (ii)~Two spectral displays in the G$\infty$ development are incorrect as printed; corrected bounds and an exact certificate-form extension lemma are verified. (iii)~Anonymity and neutrality are jointly unsatisfiable for a resolute rule at every $|A| \geq 2$; the endogenous-electorate impossibility is rebuilt on an Overwhelming-Bloc axiom with no classical inputs. Separately, the Hopf transition is confirmed to occur at the $\gamma = 1$ boundary, aligning Law~7 with its own stated threshold. None of these affects the framework's architecture; each sharpens a single result.
+\paragraph{Corrections surfaced by verification.} Formalizing the paper turned up three issues, each machine-checked, and each is now integrated into the statements and proofs it concerns (Theorem~\ref{thm:esdi-existence}, Lemma~\ref{lem:single-step}, Section~\ref{sec:electorate-impossibility}, and Proposition~\ref{prop:hopf-threshold}); see footnote~\ref{fn:formal} and, for the full record, the repository's \texttt{STATEMENTS.md} and \texttt{RETURN.md}. (i)~The ESDI existence proof (Theorem~\ref{thm:esdi-existence}) does not cover state-dependent fitness; existence is recovered via Nash's improvement map and Brouwer's theorem. (ii)~Two spectral displays in the G$\infty$ development are incorrect as printed; corrected bounds and an exact certificate-form extension lemma are verified. (iii)~Anonymity and neutrality are jointly unsatisfiable for a resolute rule at every $|A| \geq 2$; the endogenous-electorate impossibility is rebuilt on an Overwhelming-Bloc axiom with no classical inputs. Separately, the Hopf transition is confirmed to occur at the $\gamma = 1$ boundary, aligning Law~7 with its own stated threshold. None of these affects the framework's architecture; each sharpens a single result.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -7195,35 +7111,17 @@ Consider extending an $L$-level system with slack $\sigma = 1 - \rho(\Gamma)$ by
 \]
 where $b \in \R^L_+$ captures externalities from level $(L+1)$ to existing levels, and $c \in \R^L_+$ captures reverse externalities.
 
-\textbf{Step 1: Perturbed Eigenvalue.}
-Let $(\lambda, v)$ be an eigenpair of $\Gamma$ with $|\lambda| = \rho(\Gamma)$. For the extended matrix, we seek eigenvalues $\tilde{\lambda}$ of $\tilde{\Gamma}$.
-
-The characteristic polynomial is:
-\[
-\det(\tilde{\Gamma} - \tilde{\lambda} I) = \det(\Gamma - \tilde{\lambda} I_{L}) \cdot (-\tilde{\lambda}) - c^\top \text{adj}(\Gamma - \tilde{\lambda} I) b
-\]
-where $\text{adj}$ denotes the adjugate matrix.
-
-\textbf{Step 2: Bound via Weyl.}
-By Weyl's inequality for singular values:
-\[
-\sigma_i(\tilde{\Gamma}) \leq \sigma_i(\Gamma) + \|B\|
-\]
-where $B = \begin{pmatrix} 0 & b \\ c^\top & 0 \end{pmatrix}$ and $\|B\| = \sqrt{\|b\|^2 + \|c\|^2}$.
-
-For non-negative matrices, $\rho(\tilde{\Gamma}) \leq \rho(\Gamma) + O(\|b\| + \|c\|)$.
-
-\textbf{Step 3: Weighted Bound.}
-Let $v = (I - \Gamma^\top)^{-1} \mathbf{1}$ be the G1 weights. Define:
+\textbf{Step 1: Certificate for the base system.}
+By the M-matrix characterisation of the small-gain condition (Appendix~C), $\rho(\Gamma) < 1$ is equivalent to the existence of a weight vector $v > 0$ with $(I - \Gamma^\top)v \geq \sigma\,\mathbf{1}$; the G1 weights $v = (I - \Gamma^\top)^{-1}\mathbf{1}$ realise this with $\sigma = 1 - \rho(\Gamma)$. Write the weighted norms
 \[
 \|b\|_{\infty, v} := \max_\ell \frac{b_\ell}{v_\ell}, \qquad \langle c, v \rangle := \sum_\ell c_\ell v_\ell.
 \]
 
-The perturbation to $\rho(\Gamma)$ is bounded by:
-\[
-\rho(\tilde{\Gamma}) - \rho(\Gamma) \leq \max\left( \|b\|_{\infty, v}, \frac{\langle c, v \rangle}{\|\mathbf{1}\|_v} \right)
-\]
-where $\|\mathbf{1}\|_v = \sum_\ell v_\ell$.
+\textbf{Step 2: Extended certificate.}
+Extend $v$ by a single new weight $w = \langle b, v\rangle + (1-\theta)\sigma > 0$, forming $\tilde{v} = (v, w)$. Writing out $(I - \tilde{\Gamma}^\top)\tilde{v}$ block by block: each original coordinate $\ell$ contributes $\big((I - \Gamma^\top)v\big)_\ell - c_\ell w \geq \sigma - c_\ell w$, and the new coordinate contributes $w - \langle b, v\rangle = (1-\theta)\sigma$. Under the stated smallness of the couplings these are all at least $(1-\theta)\sigma$, so $(I - \tilde{\Gamma}^\top)\tilde{v} \geq (1-\theta)\sigma\,\mathbf{1}$.
+
+\textbf{Step 3: Spectral conclusion.}
+A nonnegative matrix admitting such a positive certificate has spectral radius bounded by the certificate margin (Appendix~C; the underlying row-sum eigenvalue bound is \texttt{SpectralBridge.lean}). Hence $\rho(\tilde{\Gamma}) \leq 1 - (1-\theta)\sigma$. (This replaces an earlier singular-value / Weyl perturbation argument, which does not control the spectral radius of a nonsymmetric gain matrix; the corrected certificate construction is machine-checked in \texttt{Law4\_ClosureG.lean}.)
 
 \textbf{Step 4: Slack Preservation.}
 If $\|b\|_{\infty, v} \leq \sigma/2$ and $\langle c, v \rangle \leq \sigma \|\mathbf{1}\|_v / 2$:
