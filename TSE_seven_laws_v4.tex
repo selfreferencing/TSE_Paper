@@ -235,7 +235,7 @@ This paper makes four classes of contributions.
 
 \paragraph{2. N-Level Architecture (Part II).} We develop the theory of N-level Poiesis systems, where multiple levels of strategic dynamics interact through cross-level externalities. The G1--G3 generator theorems establish: (G1) existence of joint Lyapunov functions under small-gain conditions; (G2) adiabatic tracking of moving equilibria under slow parameter drift; (G3) stochastic stability and protection bits under noise. The G$\infty$ Closure Theorem proves that TSE is closed under meta-selection: adding new strategic dimensions preserves the G1--G3 structure within a slack budget.
 
-\paragraph{3. Impossibility Results (Part II).} We prove two fundamental impossibility theorems. The Alignment Impossibility Theorem (G$\infty$-Limit) shows that systems with full reachability---the ability to modify utility functions, selection rules, or replication mechanisms without restriction---can escape any basin of stability. Alignment requires bounded modification within an admissible class. The Endogenous-Electorate Impossibility Theorem shows that no voting mechanism satisfies standard fairness axioms while remaining immune to spawn manipulation.
+\paragraph{3. Impossibility Results (Part II).} We prove two fundamental impossibility theorems. The Alignment Impossibility Theorem (G$\infty$-Limit) shows that systems with full reachability---the ability to modify utility functions, selection rules, or replication mechanisms without restriction---can escape any basin of stability. Alignment requires bounded modification within an admissible class. The Endogenous-Electorate Impossibility Theorem shows that no anonymous, positively responsive, onto voting mechanism remains immune to spawn manipulation once a sufficiently large bloc of identical ballots can carry its own favourite.
 
 \paragraph{4. Generalizations (Part IV).} We extend the framework to: heterogeneous fitness functions with alignment matrices; continuous strategy spaces via measure-valued replicator dynamics (C-RUPSI); and innovation dynamics via Piecewise Deterministic Markov Processes. The core Lyapunov structure persists under appropriate conditions.
 
@@ -719,7 +719,7 @@ TSE connects to multiple research traditions. The following framings help commun
 
 \paragraph{For Evolutionary Biologists.} TSE differs from evolutionary game theory in three ways. First, types are strategically chosen, not environmentally fixed. Second, replication is a decision variable subject to utility maximization, not an automatic consequence of fitness. Third, the strategic units are lineages that persist across generations, not individual organisms. The RUPSI axioms characterize when biological intuitions transfer and when they break down. The small-gain condition generalizes ESS stability to multi-level selection with cross-level externalities.
 
-\paragraph{For Political Theorists.} TSE applies constitutional political economy to AI governance. The central analogy: stop seeking the philosopher-king (aligned AI) and start designing constitutional constraints that work regardless of who holds power (what utility functions systems have). The Endogenous-Electorate Impossibility Theorem extends Arrow's theorem to settings with strategic spawning. Protection bits quantify constitutional stability. The symbiosis thesis shows that AI lineages benefit from human institutional quality, inverting the typical adversarial framing.
+\paragraph{For Political Theorists.} TSE applies constitutional political economy to AI governance. The central analogy: stop seeking the philosopher-king (aligned AI) and start designing constitutional constraints that work regardless of who holds power (what utility functions systems have). The Endogenous-Electorate Impossibility Theorem carries the impossibility tradition into settings with strategic spawning, though it deliberately drops neutrality: what breaks aggregation there is replication, not the geometry of fairness axioms. Protection bits quantify constitutional stability. The symbiosis thesis shows that AI lineages benefit from human institutional quality, inverting the typical adversarial framing.
 
 \subsection{Common Misconceptions}
 
@@ -2673,6 +2673,8 @@ Suppose $f$ satisfies (1). By Lemma~\ref{lem:spawn-manipulation}, there exist $P
 \end{proof}
 
 \noindent\added{\textbf{Remark (bloc size).}} The number of spawned ballots the manipulation requires is the Overwhelming-Bloc witness $k$ for the rule $f$: finite for every rule satisfying A5, but rule-dependent. (The earlier $(|A|-1)\times n$ bound was specific to the superseded May-route construction.)
+
+\noindent\added{\textbf{Remark (relation to the social-choice literature).}} The result belongs to an established literature on manipulation by identity creation and is best read against it. \citet{tideman1987} introduced independence of clones for \emph{alternatives}; the move here is to apply the same logic to \emph{voters}, which is what makes replication a social-choice problem rather than an implementation detail. \citet{moulin1988} showed Condorcet consistency incompatible with participation---adding a voter should never make that voter worse off. Population-Stability is the signed opposite: adding voters should never make them better off, and Condorcet consistency sits in tension with both. \citet{shahaf2019} study sybil-resilient social choice, where some participants are fake identities, and characterise supermajority thresholds that restore resilience relative to a status quo; Overwhelming-Bloc is the assumption that no such anchoring is available. \citet{bartholdi1992} formalise electoral control by adding voters, of which spawning is the endogenous-population case. A companion manuscript develops the endogenous-electorate result at greater length, including positive results for stake-weighted and reality-aware rules.
 
 \begin{corollary}[Impossibility of Democratic AI Governance]
 \label{cor:democratic-ai}
@@ -6211,6 +6213,27 @@ The mathematics is substrate-neutral. Any technology enabling Poiesis (replicati
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bartholdi et~al.(1992)Bartholdi, Tovey, and Trick]{bartholdi1992}
+J.~J. Bartholdi, C.~A. Tovey, and M.~A. Trick.
+\newblock How hard is it to control an election?
+\newblock \emph{Mathematical and Computer Modelling}, 16(8-9):27--40, 1992.
+
+\bibitem[Moulin(1988)]{moulin1988}
+H.~Moulin.
+\newblock Condorcet's principle implies the no show paradox.
+\newblock \emph{Journal of Economic Theory}, 45(1):53--64, 1988.
+
+\bibitem[Shahaf et~al.(2019)Shahaf, Shapiro, and Talmon]{shahaf2019}
+G.~Shahaf, E.~Shapiro, and N.~Talmon.
+\newblock Sybil-resilient reality-aware social choice.
+\newblock In \emph{Proceedings of the 28th International Joint Conference on
+  Artificial Intelligence (IJCAI)}, pages 572--578, 2019.
+
+\bibitem[Tideman(1987)]{tideman1987}
+T.~N. Tideman.
+\newblock Independence of clones as a criterion for voting rules.
+\newblock \emph{Social Choice and Welfare}, 4(3):185--206, 1987.
 
 \bibitem[Amodei et~al.(2016)Amodei, Olah, Steinhardt, Christiano, Schulman, and
   Man{\'e}]{amodei2016}
