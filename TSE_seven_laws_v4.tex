@@ -2674,7 +2674,7 @@ Suppose $f$ satisfies (1). By Lemma~\ref{lem:spawn-manipulation}, there exist $P
 
 \noindent\added{\textbf{Remark (bloc size).}} The number of spawned ballots the manipulation requires is the Overwhelming-Bloc witness $k$ for the rule $f$: finite for every rule satisfying A5, but rule-dependent. (The earlier $(|A|-1)\times n$ bound was specific to the superseded May-route construction.)
 
-\noindent\added{\textbf{Remark (relation to the social-choice literature).}} The result belongs to an established literature on manipulation by identity creation and is best read against it. \citet{tideman1987} introduced independence of clones for \emph{alternatives}; the move here is to apply the same logic to \emph{voters}, which is what makes replication a social-choice problem rather than an implementation detail. \citet{moulin1988} showed Condorcet consistency incompatible with participation---adding a voter should never make that voter worse off. Population-Stability is the signed opposite: adding voters should never make them better off, and Condorcet consistency sits in tension with both. \citet{shahaf2019} study sybil-resilient social choice, where some participants are fake identities, and characterise supermajority thresholds that restore resilience relative to a status quo; Overwhelming-Bloc is the assumption that no such anchoring is available. \citet{bartholdi1992} formalise electoral control by adding voters, of which spawning is the endogenous-population case. A companion manuscript develops the endogenous-electorate result at greater length, including positive results for stake-weighted and reality-aware rules.
+\noindent\added{\textbf{Remark (relation to the social-choice literature).}} The result belongs to an established literature on manipulation by identity creation and is best read against it. \citet{tideman1987} introduced independence of clones for \emph{alternatives}; the move here is to apply the same logic to \emph{voters}, which is what makes replication a social-choice problem rather than an implementation detail. \citet{moulin1988} showed Condorcet consistency incompatible with participation---adding a voter should never make that voter worse off. Population-Stability is the signed opposite: adding voters should never make them better off, and Condorcet consistency sits in tension with both. \citet{shahaf2019} study sybil-resilient social choice, where some participants are fake identities, and characterise supermajority thresholds that restore resilience relative to a status quo; Overwhelming-Bloc is the assumption that no such anchoring is available. \citet{bartholdi1992} formalise electoral control by adding voters, of which spawning is the endogenous-population case. The closest antecedent outside voting is false-name-proofness: \citet{yokoo2004} show that in combinatorial auctions a single bidder submitting bids under multiple identifiers defeats the Vickrey--Clarke--Groves mechanism, and that no false-name-proof protocol is Pareto efficient. The present theorem is the social-choice analogue---identity manufacture defeats aggregation rather than allocation. A companion manuscript develops the endogenous-electorate result at greater length, including positive results for stake-weighted and reality-aware rules.
 
 \begin{corollary}[Impossibility of Democratic AI Governance]
 \label{cor:democratic-ai}
@@ -3460,6 +3460,8 @@ measuring how often constitutions change relative to within-constitution selecti
 \]
 where $\kappa(g)$ is the \emph{entrenchment parameter}---the number of veto gates required to amend constitution $g$.
 \end{proposition}
+
+\noindent\added{The entrenchment parameter has an established empirical counterpart. \citet{rasch2006} construct indices of the number of central-government veto players whose assent an amendment requires, coded by counting centres of institutional authority beyond the parliament---bicameral, presidential, federal. That is the same construct as $\kappa(g)$, measured on real constitutions, and it is the natural source of calibration for the tradeoff above.}
 
 \begin{theorem}[G12: Constitutional Selection]
 \label{thm:g12}
@@ -6213,6 +6215,20 @@ The mathematics is substrate-neutral. Any technology enabling Poiesis (replicati
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Rasch and Congleton(2006)]{rasch2006}
+Bj{\o}rn~Erik Rasch and Roger~D. Congleton.
+\newblock Amendment procedures and constitutional stability.
+\newblock In Roger~D. Congleton and Birgitta Swedenborg, editors, \emph{Democratic
+  Constitutional Design and Public Policy: Analysis and Evidence}, pages
+  319--342. MIT Press, Cambridge, MA, 2006.
+
+\bibitem[Yokoo et~al.(2004)Yokoo, Sakurai, and Matsubara]{yokoo2004}
+Makoto Yokoo, Yuko Sakurai, and Shigeo Matsubara.
+\newblock The effect of false-name bids in combinatorial auctions: New fraud in
+  internet auctions.
+\newblock \emph{Games and Economic Behavior}, 46\penalty0 (1):\penalty0
+  174--188, 2004.
 
 \bibitem[Bartholdi et~al.(1992)Bartholdi, Tovey, and Trick]{bartholdi1992}
 J.~J. Bartholdi, C.~A. Tovey, and M.~A. Trick.
