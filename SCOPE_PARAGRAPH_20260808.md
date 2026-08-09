@@ -1,47 +1,15 @@
-# SCOPE PARAGRAPH — for the v4 build — 2026-08-08
+# SCOPE PARAGRAPH — FINAL, for the v4 build — 2026-08-08 (revised)
 
-**From:** machine one, relaying Kevin's text and a placement recommendation.
-**Action requested:** insert before the Monday/Tuesday arXiv build. Kevin's wording is
-authoritative; the placement below is a recommendation machine two may push back on.
+**Supersedes the earlier version of this file.** Kevin has decided: **the paragraph goes in
+"A Note on Method," as its opening paragraph. The abstract is not changed.**
 
-## 1. The problem this fixes
+This is a settled instruction, not a recommendation. The corrections listed in §2 are already
+applied to the text in §1.
 
-The abstract currently reads as a finished contribution — *"we need a theory that captures both
-rationality and replication. This paper provides one,"* then Seven Laws, then wide applications. A
-technical reader at a lab evaluates that as a claim to have settled something, reaches the
-untested empirical layer, and discounts the whole artifact including the verified part. Undeclared,
-the unvalidated layer contaminates the verified one. Declared, the reader sees a verified formal
-kernel with an explicit, well-posed gap.
+## 1. The text — drop in verbatim
 
-## 2. Recommendation: split it. Two placements, two voices.
-
-**The abstract is written in third person** — "we need a theory," "This paper provides one."
-**Kevin's scope paragraph is first person singular** — "My findings are formal." Dropping it
-verbatim into the abstract collides two voices inside one block of text. But the **Note on Method**
-immediately below is *already* first person ("The framework, the interpretation, and the
-applications are mine… I chose this method deliberately"), so his paragraph fits there natively.
-
-Hence: a short third-person version closes the abstract; Kevin's full first-person paragraph opens
-the Note on Method.
-
-There is also a practical reason to keep the abstract version short. arXiv listing pages truncate
-long abstracts from the end, and the current abstract is already long. A 120-word scope note
-appended to it is the first thing a listing would cut — which is exactly backwards.
-
-### 2a. Abstract — append at the end, third person
-
-```latex
-\medskip
-\noindent The results below are machine-verified in Lean~4 with zero custom axioms. The empirical
-predictions the framework generates are not yet tested, since testing them requires simulation at
-a scale beyond present resources. This paper and its repository are therefore best read as a
-prototype kernel with a generative function: the framework yields specific, testable models for
-particular settings---market tipping, price formation, elections---each of which still has to be
-built and run. It is offered as an instrument for studying the social world of strategic
-replicators, not as a set of results about that world.
-```
-
-### 2b. Note on Method — insert as the new opening paragraph, Kevin's text verbatim
+Insert as the **new first paragraph** of `\section*{A Note on Method}`, immediately before the
+existing "The framework, the interpretation, and the applications are mine."
 
 ```latex
 My findings are formal. The results are machine-verified in Lean~4 with zero custom axioms. My
@@ -54,33 +22,43 @@ separate papers. I offer the kernel here as an instrument for studying the socia
 strategic replicators. It is not a set of results about that world.
 ```
 
-## 3. Four corrections already applied to Kevin's text above
+**Why first rather than second.** The section currently runs provenance → why this method → the
+paper as an instance of its own thesis, which is a coherent arc. Scope belongs ahead of it: what
+the object *is* before how it was made. The existing paragraphs follow unchanged and the arc still
+reads.
 
-Machine one applied these; flagging them so they are visible rather than silent.
+## 2. Corrections applied to Kevin's original wording
 
-1. **"strategic replications" → "strategic replicators."** The framework's central noun is the
-   entity, not the act. This is the paper's own term of art and the closing line of a scope note
-   is the worst place to get it wrong. **This is the one that mattered.**
-2. **"an instrument about the social world" → "an instrument for studying the social world."**
-   "Instrument about" is not idiomatic; the instrument-versus-results contrast survives intact.
-3. "The results have Lean 4 machine verification" → "are machine-verified in Lean 4."
-4. "Each of these models requires testing" → "still requires testing," which stops the next
-   sentence ("I have prepared several as separate papers") from implying the prepared ones were
-   tested.
+Listed so they are visible rather than silent. All four are machine one's, approved by Kevin.
 
-## 4. If machine two disagrees with the split
+| # | From | To | Why |
+|---|---|---|---|
+| 1 | "the social world of strategic **replications**" | "strategic **replicators**" | The framework's central noun is the entity, not the act. The paper's own term of art, in the paragraph's closing line. **This is the one that mattered.** |
+| 2 | "an instrument **about** the social world" | "an instrument **for studying** the social world" | Not idiomatic. The instrument-versus-results contrast survives intact |
+| 3 | "The results **have Lean 4 machine verification**" | "**are machine-verified in Lean~4**" | Reads as English rather than as a specification |
+| 4 | "Each of these models **requires** testing" | "**still requires** testing" | Stops the next sentence — "I have prepared several as separate papers" — from implying the prepared ones were tested |
 
-The fallback, in order of preference: (i) Kevin's paragraph in the Note on Method only, with the
-abstract untouched — loses arXiv-listing readers, who are the ones the note is for; (ii) Kevin's
-paragraph in the abstract only, accepting the voice collision. Do not do both verbatim; the
-duplication would read as anxiety.
+Two sentences were also joined with "and" ("…large-scale simulations, and those require…") for
+rhythm. If machine two prefers Kevin's original staccato there, restore the full stop; it is the
+one change with no argument behind it beyond ear.
 
-## 5. Build notes
+## 3. What is deliberately NOT being done
 
-- The `.tex` changes, so **regenerate the README sha256** as was done at `8b8b09b0…d3377`.
-  Machine one will re-verify it against the pushed blob afterwards, as before.
-- Watch for the residual flagged in `SYNC_REPLY5`: the glossary Population-Stability entry still
-  says "standard democratic axioms." Worth sweeping in the same commit.
-- Kevin's open question, not settled: the example list dropped contests over durable capacity in
-  favour of price formation. The conflict model is the most complete of the satellite papers, and
-  naming it costs three words. His call; both versions above use his list as written.
+- **No abstract change.** The earlier version of this file proposed a compressed third-person
+  scope sentence at the end of the abstract. Kevin has decided against it. Consequence, recorded
+  so it is a known trade rather than an oversight: **an arXiv listing shows the abstract only, so
+  a reader who never opens the PDF sees no scope statement.** Reversible at any time; the
+  two-sentence version is in machine one's `SCOPING_20260808.md` if it is ever wanted.
+- **No duplication.** The paragraph appears once, in the Note on Method, and nowhere else.
+
+## 4. Build notes
+
+- The `.tex` changes ⟹ **regenerate the README `sha256`**, as was done for `8b8b09b0…d3377`.
+  Machine one will recompute it against the pushed blob and confirm, as before.
+- **Sweep in the same commit if convenient:** the residual from `SYNC_REPLY5` — the glossary
+  Population-Stability entry still reads "no voting rule satisfies **standard democratic
+  axioms**," which is the phrase-shape already removed from Main Contributions and wrong the same
+  way, since Overwhelming-Bloc is a modelling axiom about the rule's responsiveness.
+- Still unsettled, and Kevin's alone: the example list uses "market tipping, price formation, and
+  elections." Contests over durable capacity — the most complete of the satellite papers — is not
+  named. Use the list exactly as written above unless he says otherwise.
