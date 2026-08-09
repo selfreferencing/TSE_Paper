@@ -122,6 +122,15 @@ Applications range from AI deployment dynamics to institutional design, and bear
 
 \section*{A Note on Method}
 
+My findings are formal. The results are machine-verified in Lean~4 with zero custom axioms. My
+findings are not yet empirical. The theory generates falsifiable predictions, but testing them
+requires large-scale simulations, and those require resources beyond what I have available. The
+paper and repository should therefore be seen as a prototype kernel with a generative function.
+It creates specific, testable models for particular settings, such as market tipping, price
+formation, and elections. Each of these models still requires testing. I have prepared several as
+separate papers. I offer the kernel here as an instrument for studying the social world of
+strategic replicators. It is not a set of results about that world.
+
 The framework, the interpretation, and the applications are mine. The
 mathematical exposition was developed with AI assistance under my direction,
 and the results are machine-verified in Lean 4; the repository is the primary
@@ -683,7 +692,7 @@ This section provides definitions of key concepts. These definitions are canonic
 
 \paragraph{Spawn Manipulation.} Strategic creation of new voters to influence election outcomes. When agents can spawn copies that vote, standard democratic mechanisms become vulnerable: a lineage can create arbitrarily many copies with identical preferences, swamping the votes of others.
 
-\paragraph{Population-Stability.} Immunity to spawn manipulation. A voting rule is population-stable if spawning additional copies with identical preferences cannot change the outcome in a way that benefits the spawning lineage. The Endogenous-Electorate Impossibility Theorem proves that no voting rule satisfies standard democratic axioms while also being population-stable.
+\paragraph{Population-Stability.} Immunity to spawn manipulation. A voting rule is population-stable if spawning additional copies with identical preferences cannot change the outcome in a way that benefits the spawning lineage. The Endogenous-Electorate Impossibility Theorem proves that no anonymous, positively responsive, onto voting rule can be population-stable once a sufficiently large bloc of identical ballots carries its own favourite.
 
 \subsection{Market Dynamics Concepts}
 
